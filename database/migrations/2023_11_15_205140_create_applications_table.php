@@ -14,7 +14,11 @@ return new class extends Migration
         Schema::create('applications', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('url');
+            $table->string('url_prod')->nullable();
+            $table->string('url_dev')->nullable();
+            $table->string('pic_sisi')->nullable();
+            $table->string('pic_ict')->nullable();
+            $table->string('git_path')->nullable();
             $table->string('description')->nullable();
             $table->string('image')->nullable();
             $table->string('business_process')->nullable();
@@ -41,8 +45,6 @@ return new class extends Migration
             $table->string('migration_status')->nullable();
             $table->text('user_login')->nullable();
             $table->text('notes')->nullable();
-            $table->unsignedBigInteger('pic_id')->nullable();
-            $table->foreign('pic_id')->references('id')->on('users');
             $table->timestamps();
         });
     }

@@ -19,7 +19,33 @@ class UserController extends Controller
         return new UserResource(true, 'List Data User', $user);
     }
 
-    
+    public function store(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'name'     => 'required',
+        ]);
+
+        //check if validation fails
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
+        }
+        
+         //create user
+         $user = User::create([
+            'name'      => $request->name,
+            'email'     => $request->email,
+            'role'      => $request->role,
+            'job'      => $request->job,
+            'team'      => $request->team,
+            'phone'      => $request->phone,
+            'password'  => bcrypt($request->password)
+        ]);
+
+        //return response
+        return new UserResource(true, 'Data Aplikasi Berhasil Ditambahkan!', $user);
+    }
+
+
     public function show(User $user)
     {
         //return single post as a resource
@@ -39,16 +65,16 @@ class UserController extends Controller
             return response()->json($validator->errors(), 422);
         }
 
-        
+
         $user->fill($request->post())->update();
-        
+
         //return response
         return new UserResource(true, 'Data User Berhasil Diubah!', $user);
     }
 
     public function destroy(User $user)
     {
-        
+
         //delete post
         $user->delete();
 
