@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
+use PHPOpenSourceSaver\JWTAuth\Facades\JWTAuth;
 
 class LoginController extends Controller
 {
@@ -20,7 +21,14 @@ class LoginController extends Controller
         $validator = Validator::make($request->all(), [
             'email'     => 'required',
             'password'  => 'required'
-        ]);
+        ],
+            [
+                // custom message
+                'email.required' => 'Email belum terisi', 
+                'password.required' => 'Password belum terisi' 
+            ]
+
+        );
 
         //if validation fails
         if ($validator->fails()) {
@@ -31,7 +39,7 @@ class LoginController extends Controller
         $credentials = $request->only('email', 'password');
 
         //if auth failed
-        if(!$token = auth()->guard('api')->attempt($credentials)) {
+        if(!$token = JWTAuth::attempt($credentials)) {
             return response()->json([
                 'success' => false,
                 'message' => 'Email atau Password Anda salah'
@@ -41,7 +49,7 @@ class LoginController extends Controller
         //if auth success
         return response()->json([
             'success' => true,
-            'user'    => auth()->guard('api')->user(),    
+            'user'    => auth()->user(),    
             'token'   => $token   
         ], 200);
     }

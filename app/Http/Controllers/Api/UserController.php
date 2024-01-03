@@ -57,7 +57,7 @@ class UserController extends Controller
         //define validation rules
         $validator = Validator::make($request->all(), [
             'name'     => 'required',
-            'email'    => 'required|unique:users',
+            'email'    => 'required',
         ]);
 
         //check if validation fails
@@ -66,7 +66,9 @@ class UserController extends Controller
         }
 
 
-        $user->fill($request->post())->update();
+        $user->fill($request->post());
+        $user->password = bcrypt($request->password);
+        $user->update();
 
         //return response
         return new UserResource(true, 'Data User Berhasil Diubah!', $user);

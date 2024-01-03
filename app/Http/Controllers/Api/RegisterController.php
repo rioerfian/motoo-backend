@@ -21,8 +21,19 @@ class RegisterController extends Controller
         $validator = Validator::make($request->all(), [
             'name'      => 'required',
             'email'     => 'required|email|unique:users',
-            'password'  => 'required|min:8|confirmed'
-        ]);
+            'password'  => 'required|min:8'
+            
+        ],
+            [
+                // custom message
+                'name.required' => 'Nama belum terisi', 
+                'email.required' => 'Email belum terisi', 
+                'email.email' => 'Email harus valid', 
+                'email.unique' => 'Email sudah terdaftar', 
+                'password.required' => 'Password belum terisi', 
+                'password.min' => 'Password minimal 8 karakter' 
+            ]
+        );
 
         //if validation fails
         if ($validator->fails()) {
@@ -33,7 +44,8 @@ class RegisterController extends Controller
         $user = User::create([
             'name'      => $request->name,
             'email'     => $request->email,
-            'password'  => bcrypt($request->password)
+            'password'  => bcrypt($request->password),
+            'role' => 'user'
         ]);
 
         //return response JSON user is created

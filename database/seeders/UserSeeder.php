@@ -15,18 +15,20 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        for ($i = 1; $i <= 20; $i++) {
+        DB::table('users')->insert([
+            'name' => 'admin12345',
+            'role' => 'admin',
+            'email' => 'admin12345@gmail.com',
+            'password' => Hash::make('admin12345'),
+        ]);
 
-            DB::table('users')->insert([
-                'name' => Str::random(10),
-                'role' => 'user',
-                'job' => Str::random(10),
-                'phone' => Str::random(10),
-                'team' => 'Collaboration',
-                'email' => Str::random(10) . '@gmail.com',
-                'password' => Hash::make('password'),
-            ]);
-           
-        }
+        DB::table('users')->insert([
+            'name' => 'user12345',
+            'role' => 'user',
+            'email' => 'user12345@gmail.com',
+            'password' => Hash::make('user12345'),
+        ]);
+
+
     }
 }

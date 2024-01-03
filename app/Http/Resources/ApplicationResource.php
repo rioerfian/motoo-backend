@@ -9,7 +9,7 @@ class ApplicationResource extends JsonResource
 {
     public $status;
     public $message;
-    
+
     /**
      * __construct
      *
@@ -39,4 +39,5 @@ class ApplicationResource extends JsonResource
             'data'      => $this->resource
         ];
     }
+
 }
